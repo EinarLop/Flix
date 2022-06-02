@@ -6,6 +6,23 @@ exports.getAll = (req, res) => {
     .catch((err) => res.status(500).json("Error: " + err));
 };
 
+exports.validate = (req, res) => {
+  console.log(req.body.username);
+  User.find({
+    $and: [{ username: req.body.username }, { password: req.body.password }],
+  })
+    .then((user) => {
+      if (user.length == 0) {
+        console.log(user);
+        res.json("User does not exists");
+      } else {
+        console.log(user);
+        res.json("User exists");
+      }
+    })
+    .catch((err) => res.status(500).json("Error: " + err));
+};
+
 exports.create = (req, res) => {
   const username = req.body.username;
   const password = req.body.password;

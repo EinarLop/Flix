@@ -10,6 +10,8 @@ const Key = () => {
     false,
   ]);
 
+  const [movies, setMovies] = useState([]);
+
   const checked = (index) => {
     let temp = [...preferences];
     temp[index] = !temp[index];
@@ -42,6 +44,7 @@ const Key = () => {
       .then(function (response) {
         // handle success
         console.log(response.data);
+        setMovies(response.data);
       })
       .catch(function (error) {
         // handle error
@@ -72,6 +75,19 @@ const Key = () => {
         <input type="checkbox" onChange={() => checked(4)} />
       </label>
       <button onClick={() => console.log(getMovies())}>Send</button>
+
+      {movies.map((movie) => {
+        return (
+          <div style={{ border: "1px solid black" }}>
+            <p>{movie.movie_title}</p>
+            <p>{movie.movie_year}</p>
+
+            <p>{movie.rating}</p>
+            <p>{movie.place}</p>
+            <p>{movie.star_cast}</p>
+          </div>
+        );
+      })}
     </div>
   );
 };
