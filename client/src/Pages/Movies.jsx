@@ -18,12 +18,15 @@ const Key = () => {
   const [order, setOrder] = useState(-1);
   const [errorMsg, setErrorMsg] = useState("");
   const currentUsername = useContext(UsernameContext);
-  const [loggedInUser, setLoggedInUser] = useState({});
+  const [loggedInUser, setLoggedInUser] = useState({
+    username: "pop",
+    preference_key: -10,
+  });
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     if (currentUsername === "Null") {
-      setTimeout(() => setRedirect(true), 1500);
+      setRedirect(true);
       setErrorMsg("You need to login to access this page");
     }
     axios
@@ -80,6 +83,22 @@ const Key = () => {
           console.log(error);
         });
       setErrorMsg("");
+
+      axios
+        .get(
+          "http://localhost:3010/users/updateKey/" +
+            loggedInUser.username +
+            "/" +
+            key
+        )
+        .then(function (response) {
+          // handle success
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        });
     } else {
       setErrorMsg("Choose exactly 3 option");
     }
@@ -89,6 +108,15 @@ const Key = () => {
   return (
     <div className={styles.Wrapper}>
       <p className={styles.Title}>MOVIES</p>
+
+      {loggedInUser.preference_key === -1 ? (
+        <p className={styles.CurrentKey}>
+          Current key: You don't have a key yet
+        </p>
+      ) : (
+        <p> Current key: {loggedInUser.preference_key} </p>
+      )}
+
       <div className={styles.Form}>
         <label>
           <span className={styles.Label}>Comedy</span>

@@ -62,3 +62,16 @@ exports.getUser = (req, res) => {
     })
     .catch((err) => res.status(500).json("Error: " + err));
 };
+
+exports.updateKey = (req, res) => {
+  console.log("uuuuuuu", req.params);
+  User.findOneAndUpdate(
+    { username: req.params.username },
+    { preference_key: req.params.key }
+  )
+    .then((user) => {
+      console.log("ooooooo");
+      res.json(user);
+    })
+    .catch((err) => res.status(500).json("Error: " + err));
+};
