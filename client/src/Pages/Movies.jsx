@@ -24,6 +24,21 @@ const Key = () => {
   });
   const [redirect, setRedirect] = useState(false);
 
+  const getPrevMovies = (key) => {
+    axios
+      .get("http://localhost:3010/movies/key/" + key + "/" + order)
+      .then(function (response) {
+        console.log("moooooooovies", loggedInUser.preference_key);
+        console.log(response.data);
+
+        setMovies(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     if (currentUsername === "Null") {
       setRedirect(true);
@@ -33,7 +48,9 @@ const Key = () => {
       .get("http://localhost:3010/users/getByUsername/" + currentUsername)
       .then(function (response) {
         console.log(response.data);
+
         setLoggedInUser(response.data);
+        getPrevMovies(response.data.preference_key);
       })
       .catch(function (error) {
         // handle error
@@ -92,7 +109,7 @@ const Key = () => {
             key
         )
         .then(function (response) {
-          // handle success
+          setLoggedInUser({ ...loggedInUser, preference_key: key });
           console.log(response.data);
         })
         .catch(function (error) {
@@ -114,7 +131,9 @@ const Key = () => {
           Current key: You don't have a key yet
         </p>
       ) : (
-        <p> Current key: {loggedInUser.preference_key} </p>
+        <p className={styles.CurrentKey}>
+          Current key: {loggedInUser.preference_key}{" "}
+        </p>
       )}
 
       <div className={styles.Form}>
