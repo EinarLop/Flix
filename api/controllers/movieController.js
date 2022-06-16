@@ -8,8 +8,10 @@ exports.getAll = (req, res) => {
 };
 
 exports.getByKey = (req, res) => {
+  console.log(req.params);
   Movie.find({ preference_key: req.params.id })
     .limit(10)
+    .sort([["rating", req.params.order]]) // 1 ascending (default) ; -1 descending
     .then((movies) => res.json(movies))
     .catch((err) => res.status(500).json("Error: " + err));
 };

@@ -28,14 +28,37 @@ exports.create = (req, res) => {
   const password = req.body.password;
   const preference_key = req.body.preference_key;
 
-  const user = new User({
-    username,
-    password,
-    preference_key,
-  });
+  User.find({
+    username: username,
+  })
+    .then((dbUser) => {
+      if (dbUser.length == 0) {
+        const user = new User({
+          username,
+          password,
+          preference_key,
+        });
+        user
+          .save()
+          .then((user) => res.json("New user added successfully"))
+          .catch((err) => res.status(500).json(err));
+      } else {
+        res.json("User already exists");
+      }
+    })
+    .catch((err) => res.status(500).json("Error: " + err));
+};
 
-  user
-    .save()
-    .then((user) => res.json("New user added successfully:" + user))
-    .catch((err) => res.status(500).json(err));
+exports.getUser = (req, res) => {
+  const username = req.params.username;
+  console.log(username, "jsksjk");
+  User.findOne({
+    username: username,
+  })
+    .then((user) => {
+      console.log(user, username);
+      console.log("hhhhhhh");
+      res.json(user);
+    })
+    .catch((err) => res.status(500).json("Error: " + err));
 };

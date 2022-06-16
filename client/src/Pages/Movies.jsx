@@ -1,5 +1,146 @@
-const Movies = () => {
-  return <div>Hello</div>;
+import { useEffect, useContext, useState } from "react";
+import styles from "../Styles/MoviesStyles.module.scss";
+import MovieCard from "../Components/MovieCard";
+import { UsernameContext } from "../App";
+import { Navigate } from "react-router-dom";
+const axios = require("axios");
+
+const Key = () => {
+  const [preferences, setPreferences] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
+  const [movies, setMovies] = useState([]);
+  const [order, setOrder] = useState(-1);
+  const [errorMsg, setErrorMsg] = useState("");
+  const currentUsername = useContext(UsernameContext);
+  const [loggedInUser, setLoggedInUser] = useState({});
+  const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    if (currentUsername === "Null") {
+      setTimeout(() => setRedirect(true), 1500);
+      setErrorMsg("You need to login to access this page");
+    }
+    axios
+      .get("http://localhost:3010/users/getByUsername/" + currentUsername)
+      .then(function (response) {
+        console.log(response.data);
+        setLoggedInUser(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  }, []);
+
+  const checked = (index) => {
+    let temp = [...preferences];
+    temp[index] = !temp[index];
+    setPreferences(temp);
+  };
+
+  const handleOrder = () => {
+    setOrder(order * -1);
+  };
+
+  const validate = () => {
+    let temp = [...preferences];
+    return temp.filter(Boolean).length === 3;
+  };
+
+  const generateKey = () => {
+    console.log(preferences);
+    let temp = [...preferences];
+    let key = 1;
+    for (let i = 0; i < temp.length; i++) {
+      if (temp[i]) {
+        key = key * (i + 1);
+      }
+    }
+    return (key % 5) + 1;
+  };
+
+  const getMovies = () => {
+    if (validate()) {
+      let key = generateKey();
+      axios
+        .get("http://localhost:3010/movies/key/" + key + "/" + order)
+        .then(function (response) {
+          // handle success
+          console.log(response.data);
+          setMovies(response.data);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        });
+      setErrorMsg("");
+    } else {
+      setErrorMsg("Choose exactly 3 option");
+    }
+  };
+
+  if (redirect) return <Navigate to="/login" />;
+  return (
+    <div className={styles.Wrapper}>
+      <p className={styles.Title}>MOVIES</p>
+      <div className={styles.Form}>
+        <label>
+          <span className={styles.Label}>Comedy</span>
+          <input type="checkbox" onChange={() => checked(0)} />
+        </label>
+        <label>
+          <span className={styles.Label}>Drama</span>
+          <input type="checkbox" onChange={() => checked(1)} />
+        </label>
+        <label>
+          <span className={styles.Label}>Sci-Fi</span>
+          <input type="checkbox" onChange={() => checked(2)} />
+        </label>
+        <label>
+          <span className={styles.Label}>Romantic</span>
+          <input type="checkbox" onChange={() => checked(3)} />
+        </label>
+        <label>
+          <span className={styles.Label}>Adventure</span>
+          <input type="checkbox" onChange={() => checked(4)} />
+        </label>
+
+        <div className={styles.SubmitContainer}>
+          <label>
+            <span className={styles.Label}>Ascending</span>
+            <input type="checkbox" onChange={() => handleOrder()} />
+          </label>
+          <button
+            className={styles.SubmitButton}
+            onClick={() => console.log(getMovies())}
+          >
+            Send
+          </button>
+          <p className={styles.ErrorMsg}> {errorMsg}</p>
+        </div>
+      </div>
+
+      <div className={styles.MovieContainer}>
+        {movies.map((movie) => {
+          return (
+            <MovieCard
+              title={movie.movie_title}
+              year={movie.year}
+              rating={movie.rating}
+              place={movie.place}
+              cast={movie.star_cast}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
 };
 
-export default Movies;
+export default Key;

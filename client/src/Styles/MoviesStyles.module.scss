@@ -1,0 +1,61 @@
+.Wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1.6rem;
+  font-family: "Roboto", sans-serif;
+  padding: 25px;
+  justify-content: center;
+
+  color: white;
+}
+
+.Title {
+  font-size: 2.8rem;
+  color: white;
+  margin-bottom: 25px;
+  width: 100%;
+  text-align: left;
+}
+
+.Form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.Label {
+  margin-right: 10px;
+}
+
+.SubmitContainer {
+  width: 100%;
+}
+
+.SubmitButton {
+  padding: 0px 10px;
+  margin-left: 25px;
+  background-color: white;
+  border: 2px solid white;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.6rem;
+  &:hover {
+    background-color: rgb(35, 35, 35);
+    color: white;
+
+    border: 2px solid #f2bb16;
+  }
+}
+
+.ErrorMsg {
+  color: red;
+  margin-top: 10px;
+}
+
+.MovieContainer {
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+}
