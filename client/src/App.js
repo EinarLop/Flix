@@ -16,7 +16,7 @@ function App() {
   };
 
   return (
-    <div style={{ backgroundColor: "#232323" }}>
+    <div>
       <UsernameContext.Provider value={username}>
         <BrowserRouter>
           <Navbar />

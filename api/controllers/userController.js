@@ -7,16 +7,13 @@ exports.getAll = (req, res) => {
 };
 
 exports.validate = (req, res) => {
-  console.log(req.body.username);
   User.find({
     $and: [{ username: req.body.username }, { password: req.body.password }],
   })
     .then((user) => {
       if (user.length == 0) {
-        console.log(user);
         res.json("User does not exists");
       } else {
-        console.log(user);
         res.json("User exists");
       }
     })
@@ -51,26 +48,22 @@ exports.create = (req, res) => {
 
 exports.getUser = (req, res) => {
   const username = req.params.username;
-  console.log(username, "jsksjk");
+
   User.findOne({
     username: username,
   })
     .then((user) => {
-      console.log(user, username);
-      console.log("hhhhhhh");
       res.json(user);
     })
     .catch((err) => res.status(500).json("Error: " + err));
 };
 
 exports.updateKey = (req, res) => {
-  console.log("uuuuuuu", req.params);
   User.findOneAndUpdate(
     { username: req.params.username },
     { preference_key: req.params.key }
   )
     .then((user) => {
-      console.log("ooooooo");
       res.json(user);
     })
     .catch((err) => res.status(500).json("Error: " + err));

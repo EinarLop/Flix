@@ -21,7 +21,6 @@ const Register = () => {
   };
 
   const sendUser = () => {
-    console.log("user: " + currentUsername);
     axios
       .post("http://localhost:3010/users/create", user)
       .then(function (response) {

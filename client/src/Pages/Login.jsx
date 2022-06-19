@@ -22,7 +22,6 @@ const Login = (props) => {
   };
 
   const validateUser = () => {
-    console.log(user);
     axios
       .post("http://localhost:3010/users/validate", user)
       .then(function (response) {

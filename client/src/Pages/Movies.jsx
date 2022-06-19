@@ -28,9 +28,6 @@ const Key = () => {
     axios
       .get("http://localhost:3010/movies/key/" + key + "/" + order)
       .then(function (response) {
-        console.log("moooooooovies", loggedInUser.preference_key);
-        console.log(response.data);
-
         setMovies(response.data);
       })
       .catch(function (error) {
@@ -47,8 +44,6 @@ const Key = () => {
     axios
       .get("http://localhost:3010/users/getByUsername/" + currentUsername)
       .then(function (response) {
-        console.log(response.data);
-
         setLoggedInUser(response.data);
         getPrevMovies(response.data.preference_key);
       })
@@ -74,7 +69,6 @@ const Key = () => {
   };
 
   const generateKey = () => {
-    console.log(preferences);
     let temp = [...preferences];
     let key = 1;
     for (let i = 0; i < temp.length; i++) {
@@ -92,7 +86,7 @@ const Key = () => {
         .get("http://localhost:3010/movies/key/" + key + "/" + order)
         .then(function (response) {
           // handle success
-          console.log(response.data);
+
           setMovies(response.data);
         })
         .catch(function (error) {
@@ -110,7 +104,6 @@ const Key = () => {
         )
         .then(function (response) {
           setLoggedInUser({ ...loggedInUser, preference_key: key });
-          console.log(response.data);
         })
         .catch(function (error) {
           // handle error
@@ -163,10 +156,7 @@ const Key = () => {
             <span className={styles.Label}>Ascending</span>
             <input type="checkbox" onChange={() => handleOrder()} />
           </label>
-          <button
-            className={styles.SubmitButton}
-            onClick={() => console.log(getMovies())}
-          >
+          <button className={styles.SubmitButton} onClick={() => getMovies()}>
             Send
           </button>
           <p className={styles.ErrorMsg}> {errorMsg}</p>
