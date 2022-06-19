@@ -1,7 +1,6 @@
 import styles from "../Styles/MovieCard.module.scss";
 
 const MovieCard = (props) => {
-  //interface segregation
   return (
     <div className={styles.Wrapper}>
       <p className={styles.Title}>{props.title}</p>
