@@ -8,7 +8,7 @@ const MovieCard = (props) => {
         <b className={styles.Bold}>Year:</b> {props.year}
       </p>
       <p className={styles.Rating}>
-        <b className={styles.Bold}> Rating: </b>{" "}
+        <b className={styles.Bold}> Rating: </b>
         {props.rating.toString().substring(0, 4)}
       </p>
       <p className={styles.Place}>
