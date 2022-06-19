@@ -15,7 +15,7 @@ const MovieCard = (props) => {
         <b className={styles.Bold}>Place: </b> {props.place}
       </p>
       <p className={styles.Director}>
-        <b className={styles.Bold}> Director:</b>{" "}
+        <b className={styles.Bold}> Director:</b>
         {props.cast.split(" (dir.), ")[0]}
       </p>
       <p className={styles.Cast}>
